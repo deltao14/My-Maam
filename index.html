@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Sujana</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --paper: #FBEAE7;
+    --paper-deep: #F3D9DA;
+    --ink: #2A1620;
+    --ink-soft: #6B4550;
+    --berry: #8C2F45;
+    --berry-bright: #B23A56;
+    --rose-dust: #C97B92;
+    --gold: #AD8752;
+    --surface: #FFFDFC;
+    --line: rgba(42,22,32,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #241118; --paper-deep: #2F1620; --ink: #F6E7EA; --ink-soft: #CBA3AE;
+      --berry: #E997AC; --berry-bright: #F2AABE; --rose-dust: #B97A8C; --gold: #D2B27C;
+      --surface: #2C1620; --line: rgba(246,231,234,0.14);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #241118; --paper-deep: #2F1620; --ink: #F6E7EA; --ink-soft: #CBA3AE;
+    --berry: #E997AC; --berry-bright: #F2AABE; --rose-dust: #B97A8C; --gold: #D2B27C;
+    --surface: #2C1620; --line: rgba(246,231,234,0.14);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: inherit; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, .display { font-family: 'Fraunces', Georgia, serif; }
+
+  main { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+  .page {
+    display: none;
+    min-height: calc(100vh - 88px);
+    padding: 3.2rem 1.4rem 2.5rem;
+    animation: rise 0.5s ease both;
+  }
+  .page.active { display: block; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .wrap { max-width: 520px; margin: 0 auto; }
+
+  /* ---------- Opening gate ---------- */
+  #cover-gate {
+    position: fixed; inset: 0; z-index: 50;
+    background: radial-gradient(120% 90% at 50% 0%, var(--paper-deep), var(--paper) 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem 1.6rem calc(2rem + env(safe-area-inset-bottom,0px));
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  #cover-gate.opened { opacity: 0; transform: translateY(-24px) scale(0.98); pointer-events: none; }
+  .kicker { font-size: 0.78rem; letter-spacing: 0.06em; color: var(--berry); font-weight: 500; }
+  .masthead { font-size: clamp(3.2rem, 15vw, 5.2rem); line-height: 0.95; margin: 0.5rem 0 0.9rem; font-weight: 600; }
+  .cover-line { max-width: 30ch; font-size: 1.05rem; color: var(--ink-soft); line-height: 1.55; margin: 0 auto 0.4rem; }
+  .cover-date { margin-top: 1.9rem; font-size: 0.8rem; color: var(--ink-soft); }
+  .begin-link {
+    margin-top: 2.4rem; background: none; border: none; font-family: 'Work Sans', sans-serif;
+    font-size: 0.95rem; color: var(--berry); padding-bottom: 3px; border-bottom: 1px solid var(--berry);
+    cursor: pointer;
+  }
+  .begin-link:active { opacity: 0.6; }
+
+  /* ---------- Nav ---------- */
+  nav#toc {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    background: var(--surface); border-top: 1px solid var(--line);
+    display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 0.7rem 0.6rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    opacity: 0; transform: translateY(100%); transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  nav#toc.visible { opacity: 1; transform: translateY(0); }
+  .toc-item { flex: 0 0 auto; background: none; border: none; font-family: 'Work Sans', sans-serif; color: var(--ink-soft); padding: 0.3rem 0.85rem; text-align: left; cursor: pointer; }
+  .toc-folio { display: block; font-size: 0.65rem; color: var(--rose-dust); }
+  .toc-label { display: block; font-size: 0.8rem; margin-top: 1px; padding-bottom: 4px; border-bottom: 1px solid transparent; white-space: nowrap; }
+  .toc-item.active .toc-label { color: var(--ink); border-bottom-color: var(--berry); }
+  .toc-item.active .toc-folio { color: var(--berry); }
+
+  /* ---------- Shared ---------- */
+  .folio { font-size: 0.75rem; letter-spacing: 0.06em; color: var(--rose-dust); margin-bottom: 0.5rem; }
+  h2.section-title { font-size: clamp(1.9rem, 8vw, 2.5rem); font-weight: 500; line-height: 1.12; margin: 0 0 1.1rem; }
+  .lede { max-width: 58ch; font-size: 1.02rem; line-height: 1.7; color: var(--ink-soft); margin: 0 0 1.5rem; }
+  .soft-para { max-width: 58ch; font-size: 1rem; line-height: 1.75; color: var(--ink); margin: 0 0 1.3rem; }
+  .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: clamp(1.3rem, 6vw, 1.7rem); line-height: 1.42; color: var(--berry); margin: 0 0 1.5rem;
+  }
+
+  /* ---------- Moodboard ---------- */
+  .board-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; grid-auto-rows: 96px; }
+  .board-card { border-radius: 4px; padding: 0.9rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0.55rem; }
+  .board-card.tall { grid-row: span 2; }
+  .board-card.a { background: var(--surface); border: 1px solid var(--line); }
+  .board-card.b { background: var(--paper-deep); }
+  .board-card svg { color: var(--berry); flex-shrink: 0; }
+  .board-card .icon-label { font-size: 0.76rem; color: var(--ink-soft); line-height: 1.3; }
+  .board-card.note { background: var(--berry); color: #FBEAE7; justify-content: center; }
+  .board-card.note p { font-family: 'Fraunces', serif; font-style: italic; font-size: 0.98rem; line-height: 1.4; margin: 0; }
+  .board-note-below { margin-top: 1.4rem; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ---------- Letter ---------- */
+  .letter-body { font-size: 1.02rem; line-height: 1.75; max-width: 58ch; }
+  .letter-body p { margin: 0 0 1.1rem; }
+  .dropcap { float: left; font-family: 'Fraunces', serif; font-size: 3.4rem; line-height: 0.8; padding: 0.1rem 0.3rem 0 0; color: var(--berry); font-weight: 600; }
+  .signoff { margin-top: 1.6rem; font-family: 'Fraunces', serif; font-style: italic; font-size: 1.1rem; color: var(--ink-soft); }
+
+  /* ---------- Wish page ---------- */
+  .cake-stage { display: flex; justify-content: center; padding: 1.6rem 0 0.6rem; }
+  .cake { position: relative; width: 210px; }
+  .candles { display: flex; justify-content: center; gap: 14px; height: 46px; align-items: flex-end; }
+  .candle { position: relative; width: 6px; height: 30px; background: var(--gold); border-radius: 2px; cursor: pointer; }
+  .candle:nth-child(2n) { height: 24px; }
+  .flame {
+    position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%);
+    width: 11px; height: 16px; border-radius: 60% 60% 50% 50%;
+    background: radial-gradient(circle at 50% 70%, #FFE7A3, #F2A44D 55%, var(--berry-bright) 100%);
+    transition: opacity 0.25s ease, transform 0.25s ease; animation: flicker 1.6s ease-in-out infinite;
+  }
+  @keyframes flicker { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(0.92, 1.06); } }
+  .candle.out .flame { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.4); }
+  .tier { background: linear-gradient(180deg, var(--paper-deep), var(--rose-dust)); border-radius: 10px 10px 6px 6px; height: 58px; position: relative; margin-top: -4px; }
+  .tier.base { background: linear-gradient(180deg, var(--rose-dust), var(--berry)); height: 46px; border-radius: 6px; }
+  .sprinkle { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--surface); opacity: 0.8; }
+  .cake-hint { text-align: center; font-size: 0.82rem; color: var(--ink-soft); margin-top: 1.1rem; }
+  .cake-message { text-align: center; font-family: 'Fraunces', serif; font-style: italic; color: var(--berry); font-size: 1.15rem; margin-top: 1.2rem; min-height: 1.6rem; }
+  .replay-link { display: block; margin: 0.4rem auto 0; background: none; border: none; font-size: 0.8rem; color: var(--ink-soft); text-decoration: underline; cursor: pointer; }
+
+  .mail-box { margin-top: 2.4rem; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1.2rem 1.1rem; }
+  .mail-box textarea {
+    width: 100%; min-height: 74px; border: 1px solid var(--line); border-radius: 3px; background: var(--paper);
+    color: var(--ink); font-family: 'Work Sans', sans-serif; font-size: 0.92rem; padding: 0.6rem; resize: vertical; margin: 0.6rem 0 0.7rem;
+  }
+  .save-link { background: none; border: none; padding: 0; font-size: 0.88rem; color: var(--berry); border-bottom: 1px solid var(--berry); cursor: pointer; }
+  .saved-msg { margin-top: 0.6rem; font-size: 0.8rem; color: var(--ink-soft); min-height: 1.1rem; }
+  .closing-line { text-align: center; margin-top: 2.6rem; font-size: 0.85rem; color: var(--ink-soft); }
+
+  #confetti-layer { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+  .confetto { position: absolute; top: -10px; width: 7px; height: 12px; animation: confetti-fall linear forwards; }
+  @keyframes confetti-fall { to { transform: translateY(115vh) rotate(540deg); opacity: 0.9; } }
+
+  @media (min-width: 640px) { .board-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+
+<div id="cover-gate">
+  <div class="kicker">for your birthday</div>
+  <h1 class="masthead">Sujana</h1>
+  <p class="cover-line">A few things I've never said out loud — written down instead.</p>
+  <div class="cover-date">September 25</div>
+  <button class="begin-link" id="begin-btn">Begin</button>
+</div>
+
+<main>
+  <section class="page" id="page-cover">
+    <div class="wrap" style="text-align:center; padding-top: 2rem;">
+      <div class="kicker">for your birthday</div>
+      <h1 class="masthead" style="font-size: clamp(2.6rem, 14vw, 4rem);">Sujana</h1>
+      <p class="cover-line" style="margin-left:auto; margin-right:auto;">A few things I've never said out loud — written down instead.</p>
+      <div class="cover-date">September 25</div>
+    </div>
+  </section>
+
+  <section class="page" id="page-heart">
+    <div class="wrap">
+      <div class="folio">02 — What I Saw</div>
+      <h2 class="section-title">I noticed your hands first.</h2>
+      <p class="lede">The way you moved them across a keyboard — careful, unhurried, like even the smallest things deserved patience. Then your voice. Then the quiet way you held a room without asking it to notice you.</p>
+      <p class="pullquote">If leaving you was a language, I never learned to speak it. You didn't become my choice — you became my habit of living.</p>
+      <p class="soft-para">I don't think you know how much attention it takes to fall for someone slowly. It isn't one big moment. It's a hundred small ones — the patience you give people who don't always deserve it, the softness you never advertise, a loyalty so quiet most people would miss it completely. I didn't.</p>
+    </div>
+  </section>
+
+  <section class="page" id="page-moodboard">
+    <div class="wrap">
+      <div class="folio">03 — Her Palette</div>
+      <h2 class="section-title">The things that remind me of you.</h2>
+      <div class="board-grid">
+        <div class="board-card a tall">
+          <svg viewBox="0 0 64 64" width="42" height="42" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 40 V18 a3 3 0 0 1 6 0 V34"/><path d="M26 34 V14 a3 3 0 0 1 6 0 V34"/><path d="M32 34 V16 a3 3 0 0 1 6 0 V34"/><path d="M38 34 V20 a3 3 0 0 1 6 0 V38"/><path d="M20 40 c-4 2 -6 6 -6 10 c0 6 6 10 14 10 h6 c8 0 12 -5 12 -12 V38"/></svg>
+          <span class="icon-label">the hand I noticed first</span>
+        </div>
+        <div class="board-card b">
+          <svg viewBox="0 0 64 64" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="26" width="10" height="10" rx="2"/><rect x="27" y="26" width="10" height="10" rx="2"/><rect x="44" y="26" width="10" height="10" rx="2"/><line x1="16" y1="44" x2="48" y2="44"/></svg>
+          <span class="icon-label">the sound of you thinking</span>
+        </div>
+        <div class="board-card note">
+          <p>"Some people are loud about beauty. You just are it."</p>
+        </div>
+        <div class="board-card a">
+          <svg viewBox="0 0 64 64" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="26" y="10" width="12" height="16" rx="2"/><path d="M26 26 h12 l-2 22 a4 4 0 0 1 -8 0 z"/></svg>
+          <span class="icon-label">an eye for beautiful things</span>
+        </div>
+        <div class="board-card b tall">
+          <svg viewBox="0 0 64 64" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="32" cy="18" r="6"/><circle cx="20" cy="28" r="6"/><circle cx="44" cy="28" r="6"/><circle cx="32" cy="34" r="6"/><line x1="32" y1="40" x2="32" y2="54"/></svg>
+          <span class="icon-label">soft, but never fragile</span>
+        </div>
+        <div class="board-card a">
+          <svg viewBox="0 0 64 64" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 4"><path d="M32 50 C 14 36 8 24 16 16 C 22 10 32 14 32 22 C 32 14 42 10 48 16 C 56 24 50 36 32 50 Z"/></svg>
+          <span class="icon-label">loyal, quietly, always</span>
+        </div>
+      </div>
+      <p class="board-note-below">None of this is really about aesthetics — it's just easier to describe someone through the small things that remind you of them.</p>
+    </div>
+  </section>
+
+  <section class="page" id="page-letter">
+    <div class="wrap">
+      <div class="folio">04 — The Letter</div>
+      <h2 class="section-title">Dear Sujana,</h2>
+      <div class="letter-body">
+        <p><span class="dropcap">I</span>f I could say everything I mean, I don't think I'd need to write it down. But some things sit easier on a page than in a voice that might shake saying them out loud.</p>
+        <p>You are, quite simply, one of the most sincere people I have known — sincere in your kindness, in your loyalty, even in the things you've never had to say out loud for me to understand them. That kind of heart is rare. Whoever eventually has all of it will be lucky in a way most people never get to be.</p>
+        <p>I know the last few days have been quiet between us, and I know some of that quiet is mine to own. I'm sorry — plainly, and without expecting anything back for saying it.</p>
+        <p>But today isn't about any of that. Today is just about you. So — happy birthday, My Maam. I hope this year hands you exactly the kind of joy you deserve, whatever shape it ends up taking. And somewhere in it, I hope you find quiet proof that being this good to people never really goes unnoticed.</p>
+      </div>
+      <div class="signoff">— Nayeem</div>
+    </div>
+  </section>
+
+  <section class="page" id="page-wish">
+    <div class="wrap">
+      <div class="folio">05 — Make a Wish</div>
+      <h2 class="section-title">Make a wish.</h2>
+      <p class="lede">Tap each candle.</p>
+
+      <div class="cake-stage">
+        <div class="cake">
+          <div class="candles" id="candles">
+            <div class="candle" data-i="0"><span class="flame"></span></div>
+            <div class="candle" data-i="1"><span class="flame"></span></div>
+            <div class="candle" data-i="2"><span class="flame"></span></div>
+            <div class="candle" data-i="3"><span class="flame"></span></div>
+            <div class="candle" data-i="4"><span class="flame"></span></div>
+          </div>
+          <div class="tier">
+            <div class="sprinkle" style="left:20%; top:14px;"></div>
+            <div class="sprinkle" style="left:52%; top:30px;"></div>
+            <div class="sprinkle" style="left:78%; top:18px;"></div>
+            <div class="sprinkle" style="left:35%; top:40px;"></div>
+          </div>
+          <div class="tier base">
+            <div class="sprinkle" style="left:15%; top:16px;"></div>
+            <div class="sprinkle" style="left:60%; top:26px;"></div>
+            <div class="sprinkle" style="left:85%; top:14px;"></div>
+          </div>
+        </div>
+      </div>
+      <p class="cake-hint" id="cake-hint">5 candles left</p>
+      <p class="cake-message" id="cake-message"></p>
+      <button class="replay-link" id="replay-btn" style="display:none;">Light them again</button>
+
+      <div class="mail-box">
+        <div class="folio">Just for you</div>
+        <p style="margin:0 0 0.2rem; font-size:0.92rem; color: var(--ink-soft);">Write down a wish, or how today felt. It saves only on this device — for you to find again later.</p>
+        <textarea id="note-input" placeholder="Dear diary..."></textarea>
+        <button class="save-link" id="save-note-btn">Save note</button>
+        <p class="saved-msg" id="saved-msg"></p>
+      </div>
+
+      <p class="closing-line">Happy birthday, Sujana. Today, and every year after.</p>
+    </div>
+  </section>
+</main>
+
+<nav id="toc">
+  <button class="toc-item" data-target="page-cover"><span class="toc-folio">01</span><span class="toc-label">Sujana</span></button>
+  <button class="toc-item" data-target="page-heart"><span class="toc-folio">02</span><span class="toc-label">What I Saw</span></button>
+  <button class="toc-item" data-target="page-moodboard"><span class="toc-folio">03</span><span class="toc-label">Her Palette</span></button>
+  <button class="toc-item" data-target="page-letter"><span class="toc-folio">04</span><span class="toc-label">The Letter</span></button>
+  <button class="toc-item" data-target="page-wish"><span class="toc-folio">05</span><span class="toc-label">Make a Wish</span></button>
+</nav>
+
+<div id="confetti-layer"></div>
+
+<script>
+  var pages = document.querySelectorAll('.page');
+  var tocItems = document.querySelectorAll('.toc-item');
+  var toc = document.getElementById('toc');
+
+  function showPage(id) {
+    pages.forEach(function(p){ p.classList.toggle('active', p.id === id); });
+    tocItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    window.scrollTo(0, 0);
+  }
+  tocItems.forEach(function(btn){ btn.addEventListener('click', function(){ showPage(btn.dataset.target); }); });
+
+  document.getElementById('begin-btn').addEventListener('click', function(){
+    document.getElementById('cover-gate').classList.add('opened');
+    toc.classList.add('visible');
+    showPage('page-heart');
+    setTimeout(function(){ document.getElementById('cover-gate').style.display = 'none'; }, 750);
+  });
+
+  var candles = Array.prototype.slice.call(document.querySelectorAll('.candle'));
+  var hint = document.getElementById('cake-hint');
+  var message = document.getElementById('cake-message');
+  var replayBtn = document.getElementById('replay-btn');
+  var blown = 0;
+
+  function updateHint(){
+    var remaining = candles.length - blown;
+    hint.textContent = remaining > 0 ? (remaining + (remaining === 1 ? ' candle left' : ' candles left')) : '';
+  }
+  candles.forEach(function(c){
+    c.addEventListener('click', function(){
+      if (c.classList.contains('out')) return;
+      c.classList.add('out'); blown++; updateHint();
+      if (blown === candles.length) {
+        message.textContent = 'Happy birthday, Sujana 🤍 wherever that wish goes, I hope it finds its way true.';
+        replayBtn.style.display = 'block';
+        burstConfetti();
+      }
+    });
+  });
+  replayBtn.addEventListener('click', function(){
+    candles.forEach(function(c){ c.classList.remove('out'); });
+    blown = 0; updateHint(); message.textContent = ''; replayBtn.style.display = 'none';
+  });
+  updateHint();
+
+  function burstConfetti(){
+    var layer = document.getElementById('confetti-layer');
+    var colors = ['#8C2F45', '#C97B92', '#AD8752', '#F3D9DA'];
+    for (var i = 0; i < 46; i++){
+      var el = document.createElement('div');
+      el.className = 'confetto';
+      el.style.left = (Math.random() * 100) + 'vw';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+      el.style.opacity = (0.7 + Math.random() * 0.3).toString();
+      layer.appendChild(el);
+      (function(node){ setTimeout(function(){ node.remove(); }, 4200); })(el);
+    }
+  }
+
+  var noteInput = document.getElementById('note-input');
+  var savedMsg = document.getElementById('saved-msg');
+  try {
+    var existing = localStorage.getItem('sujana-bday-note');
+    if (existing) noteInput.value = existing;
+  } catch (e) {}
+  document.getElementById('save-note-btn').addEventListener('click', function(){
+    try {
+      localStorage.setItem('sujana-bday-note', noteInput.value);
+      savedMsg.textContent = 'Saved — just for you, on this device.';
+    } catch (e) {
+      savedMsg.textContent = 'Could not save right now, but your words still count.';
+    }
+  });
+</script>
+
+</body>
+</html>
